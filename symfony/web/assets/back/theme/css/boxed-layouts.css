@@ -1,0 +1,54 @@
+/*!
+ * The Wolf v1.0 (http://thewolf.bittyfox.com/)
+ * Copyright The Wolf Company © 2017 
+ * 
+ */
+
+.page-sidebar-closed.boxed-layouts .page-sidebar, .page-sidebar-closed .page-sidebar .page-sidebar-menu.page-sidebar-menu-closed {
+    left: 0;
+    margin-right: auto;
+    width: 0;
+    overflow: hidden;
+    top: 56px;
+    padding-top: 0;
+}
+
+.boxed-layouts .page-content-wrapper .page-content {   
+    padding: 20px 0;    
+}
+
+.boxed-layouts .page-heading {   
+    margin: -20px 0 0;
+}
+
+.boxed-layouts .page-content {
+    background-color: #fff;   
+}
+
+
+@media (max-width: 768px) {
+
+.page-sidebar-fixed.page-sidebar-closed .page-sidebar{   
+    width: 0 !important;   
+}
+
+.page-sidebar {
+    display: block !important;
+    height: 100% !important;
+    margin-top: 55px;
+    padding-top: 0;
+    position: fixed !important;
+    width: 100% !important;
+}
+
+.boxed-layouts.page-sidebar-fixed .page-header {
+    position: fixed;
+    z-index: 999;
+}
+
+.boxed-layouts > .container {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+}

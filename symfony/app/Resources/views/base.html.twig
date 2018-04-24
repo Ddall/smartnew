@@ -1,13 +1,18 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
-</html>
+{% extends 'AvanzuAdminThemeBundle:layout:base-layout.html.twig' %}
+ {#@see https://github.com/avanzu/AdminThemeBundle/blob/master/Resources/docs/layout.md#}
+{#{% block title %}Ddx SmartRobot{% endblock %}#}
+{#{% block avanzu_logo %}<a href="{{ path('app_homepage') }}" class="logo"><i class="fa fa-terminal"></i> Ddx SmartRobot</a>{% endblock %}#}
+
+{#{% block page_title %}Dashboard{% endblock %}#}
+{#{% block page_subtitle %}Dash{% endblock %}#}
+{#{% block avanzu_admin_footer %}#}
+    {#<footer class="main-footer">#}
+        {#<div class="pull-right hidden-xs">#}
+            {#<i>@dev-master</i>#}
+        {#</div>#}
+        {#<strong><a href="https://github.com/Ddall/SmartRobot">DdxSmartRobot</a></strong>#}
+    {#</footer>#}
+{#{% endblock %}#}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/avanzuadmintheme/static/'~ app.environment ~'/styles/admin-lte-all.css') }}" />
+{% endblock %}

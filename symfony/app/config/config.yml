@@ -30,11 +30,15 @@ framework:
     assets: ~
     php_errors:
         log: true
+    templating:
+        engines: ['twig']
 
 # Twig Configuration
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    globals:
+        admin_skin: skin-blue
 
 # Doctrine Configuration
 doctrine:
@@ -65,3 +69,7 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+
+#avanzu_admin_theme:
+#    use_assetic: true

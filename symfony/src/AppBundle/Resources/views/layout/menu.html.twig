@@ -1,0 +1,39 @@
+<nav class="horizontal-menu">
+
+    <ul class="content clearfix">
+
+        {#<li><a href="{{ path('back_accueil') }}"> <i class="fa fa-th-large"></i> Dashboard </a></li>#}
+
+
+
+        <li class="dropdown">
+            <a href="#"><i class="fa fa-first-order"></i> Référencement</a>
+            <ul class="sub-menu">
+                <li><a href="">Principales</a> </li>
+                <li><a href="">Classiques</a> </li>
+                <li><a href="">Spéciales</a> </li>
+            </ul>
+        </li>
+
+        <li class="dropdown">
+            <a href="#"><i class="fa fa-envelope-open"></i> Contact</a>
+            <ul class="sub-menu">
+                {#<li><a href="{{ path('back_contact_index') }}">Messages</a> </li>#}
+                <li><a href="">Configuration</a> </li>
+            </ul>
+        </li>
+
+
+        <li class="dropdown">
+            <a href="#"><i class="fa fa-cogs"></i> Administration</a>
+            <ul class="sub-menu">
+                <li><a href="">Informations</a> </li>
+                {#<li><a href="{{ path('back_langues_index') }}">Langues</a> </li>#}
+                {#<li><a href="{{ path('back_modules_index') }}">Modules</a> </li>#}
+                {#<li><a href="{{ path('back_pagesystemtype_index') }}">Types de Pages</a> </li>#}
+                <li><a href="">Utilisateurs</a> </li>
+            </ul>
+        </li>
+
+    </ul>
+</nav>
