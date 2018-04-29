@@ -11,5 +11,3 @@ RUN apt-get update && apt-get install -y libpq-dev npm node sudo git \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install pdo pdo_pgsql pgsql \
     && rm -rf /var/lib/apt/lists/*
-
-RUN npm install -g bower

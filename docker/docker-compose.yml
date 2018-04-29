@@ -25,8 +25,8 @@ services:
     db:
       image: postgres
       restart: always
-#      volumes:
-#          - "../data/postgresql_data:/var/lib/postgresql/data"
+      volumes:
+          - "../data/postgresql_data:/var/lib/postgresql/data"
       environment:
           POSTGRES_DB: ${DB_DATABASE}
           POSTGRES_USER: ${DB_USER}
