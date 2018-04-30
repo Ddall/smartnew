@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Command;
+namespace MarketBundle\Command;
 
 use ccxt\Exchange;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

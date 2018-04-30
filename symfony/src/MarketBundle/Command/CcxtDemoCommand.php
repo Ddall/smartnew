@@ -1,6 +1,7 @@
 <?php
 
-namespace AppBundle\Command;
+namespace MarketBundle\Command;
+
 
 use ccxt\bit2c;
 use ccxt\Exchange;

@@ -1,0 +1,3 @@
+market_homepage:
+    path:     /
+    defaults: { _controller: MarketBundle:Default:index }
