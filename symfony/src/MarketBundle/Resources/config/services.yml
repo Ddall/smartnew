@@ -7,3 +7,8 @@ services:
         class: MarketBundle\Service\ExchangeManager
         public: true
         arguments: ["%exchanges%"]
+
+    markets.update.ohlc:
+        class: MarketBundle\Service\MarketsOHLCUpdateService
+        public: true
+        arguments: [ "@exchange.manager", %markets.symbols%]

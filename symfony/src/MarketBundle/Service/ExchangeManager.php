@@ -49,7 +49,6 @@ class ExchangeManager {
         $this->strict = $strict;
     }
 
-
     /**
      * @param $name
      * @param $options

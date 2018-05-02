@@ -11,13 +11,13 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CcxtDemoCommand extends ContainerAwareCommand {
+class CcxtListMarketsCommand extends ContainerAwareCommand {
     /**
      * {@inheritdoc}
      */
     protected function configure() {
         $this
-            ->setName('ccxt:demo')
+            ->setName('markets:list:remote')
             ;
     }
 
@@ -25,14 +25,8 @@ class CcxtDemoCommand extends ContainerAwareCommand {
      * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-
         // Create exchanges
-        $exchanges = array();
-        foreach (Exchange::$exchanges as $className){
-            $t = 'ccxt\\' . $className;
-            $exchanges[$className] = new  $t;
-        }
-
+        $exchanges = $this->getContainer()->get('exchange.manager')->getAvailableExchanges();
 
         /**
          * @var $exchange Exchange
@@ -40,14 +34,6 @@ class CcxtDemoCommand extends ContainerAwareCommand {
         foreach ($exchanges as $exchangeName => $exchange){
             if($exchange->has('fetchMarkets')){
 
-                if(!in_array($exchangeName, array(
-                    'kraken',
-                    'gdax',
-                    'cex',
-                    'paymium',
-                ))) {
-                    continue;
-                }
 
                 $output->writeln('<info>'.$exchange->name.' markets</info>');
                 $table = new Table($output);
