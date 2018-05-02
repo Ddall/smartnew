@@ -7,6 +7,7 @@
 namespace MarketBundle\Service;
 
 
+use AppBundle\Exception\InvalidParameter;
 use ccxt\Exchange;
 
 class ExchangeManager {
@@ -17,22 +18,69 @@ class ExchangeManager {
     private $exchangesConfig;
 
     /**
+     * @var boolean
+     */
+    private $strict;
+
+    /**
      * ExchangeManager constructor.
      *
      * @param array $exchangesConfig
      * @param bool  $strict
      */
     public function __construct($exchangesConfig = array(), $strict = false) {
+
+        // checking exchanges
+        foreach ($exchangesConfig as $name => $options){
+
+            if($this->checkExchangeAvailability($name) === false){
+
+                if($strict === true){
+                    throw new InvalidParameter('could not find ' . $name . ' is this exchange available throught ccxt?');
+                }else{
+                    unset($exchangesConfig[$name]);
+                }
+
+            }
+        }
+
+
         $this->exchangesConfig = $exchangesConfig;
+        $this->strict = $strict;
     }
 
 
+    /**
+     * @param $name
+     * @param $options
+     * @return bool|Exchange
+     * @throws InvalidParameter
+     */
     public function getExchange($name){
         if(array_key_exists($name, $this->exchangesConfig) === false){
-            throw new InvalidParameter
+            throw new InvalidParameter('could not fetch configuration for ' . $name . ' is this exchange enabled?');
         }
+
+        return $this->hydrateExchange($name, $this->exchangesConfig[$name]);
     }
 
+    /**
+     * @return array
+     */
+    public function getAvailableExchangesNames(){
+        return array_keys($this->exchangesConfig);
+    }
+
+    /**
+     * @return Exchange[]
+     */
+    public function getAvailableExchanges(){
+        $exchanges = array();
+        foreach ($this->getAvailableExchangesNames() as $name){
+            $exchanges[$name] = $this->getExchange($name);
+        }
+        return $exchanges;
+    }
 
     /**
      * @param       $name
@@ -62,6 +110,18 @@ class ExchangeManager {
         $exchange->enableRateLimit = true;
 
         return $exchange;
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    private function checkExchangeAvailability($name){
+        if(in_array($name, Exchange::$exchanges)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
