@@ -16,27 +16,15 @@ services:
         image: memcached:alpine
         links:
           - php
-#    db:
-#      image: mysql
-#      restart: always
-#      volumes:
-#          - "../data/postgresql_data:/var/lib/postgresql/data"
-#      links:
-#        - php
-#      environment:
-#          POSTGRES_DB: ${DB_DATABASE}
-#          POSTGRES_USER: ${DB_USER}
-#          POSTGRES_PASSWORD: ${DB_PASSWORD}
     db:
         image: mysql:5.7
         volumes:
-            - "../data/db:/var/lib/mysql"
+            - ../data/db:/var/lib/mysql
         environment:
             MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
             MYSQL_DATABASE: ${DB_DATABASE}
             MYSQL_USER: ${DB_USER}
             MYSQL_PASSWORD: ${DB_PASSWORD}
-
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         environment:

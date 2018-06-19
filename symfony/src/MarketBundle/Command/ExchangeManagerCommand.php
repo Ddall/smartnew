@@ -14,6 +14,7 @@ class ExchangeManagerCommand extends ContainerAwareCommand {
     protected function configure() {
         $this
             ->setName('manager:exchanges')
+            ->setDescription('Show markets config from DB')
             ;
     }
 
@@ -30,10 +31,11 @@ class ExchangeManagerCommand extends ContainerAwareCommand {
 
         foreach ($exchanges as $name => $exchange){
             $markets = $exchange->fetchMarkets();
-            $output->writeln($name . ' has ' .count($markets) . ' available markets' );
+            $output->writeln('Market '. $name);
+            $output->writeln(' hax ' .count($exchangeManager->getEnabledMarketsFor($name)) . ' enabled markets');
+            $output->writeln(' has ' .count($markets) . ' available markets' );
+            $output->writeln(null);
         }
-
-
 
 
     }

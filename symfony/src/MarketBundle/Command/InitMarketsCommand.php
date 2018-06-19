@@ -7,13 +7,21 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CreateMarketsCommand extends ContainerAwareCommand {
+/**
+ * Class InitMarketsCommand
+ *
+ * @todo this functionality should not be required, move to a service to automate
+ *
+ * @package MarketBundle\Command
+ */
+class InitMarketsCommand extends ContainerAwareCommand {
     /**
      * {@inheritdoc}
      */
     protected function configure() {
         $this
             ->setName('markets:init')
+            ->setDescription('Persist markets parameters from .yml to DB')
             ;
     }
 
@@ -39,7 +47,6 @@ class CreateMarketsCommand extends ContainerAwareCommand {
             }
         }
 
-        // @todo clear database
         $existing = $this->getContainer()->get('doctrine')->getRepository(Market::class)->findAll();
         $output->write('Removing ' . count($existing) . ' markets ');
         $em = $this->getContainer()->get('doctrine')->getManager();
@@ -57,7 +64,6 @@ class CreateMarketsCommand extends ContainerAwareCommand {
 
         $em->flush();
         $output->writeln('done');
-
 
     }
 }

@@ -27,6 +27,7 @@ class ExchangeManager {
      *
      * @param array $exchangesConfig
      * @param bool  $strict
+     * @throws InvalidParameter
      */
     public function __construct($exchangesConfig = array(), $strict = false) {
 
@@ -36,14 +37,13 @@ class ExchangeManager {
             if($this->checkExchangeAvailability($name) === false){
 
                 if($strict === true){
-                    throw new InvalidParameter('could not find ' . $name . ' is this exchange available throught ccxt?');
+                    throw new InvalidParameter('could not find ' . $name . ' is this exchange available through ccxt?');
                 }else{
                     unset($exchangesConfig[$name]);
                 }
 
             }
         }
-
 
         $this->exchangesConfig = $exchangesConfig;
         $this->strict = $strict;
@@ -80,6 +80,21 @@ class ExchangeManager {
         }
         return $exchanges;
     }
+
+    /**
+     * @param $exchangeName
+     * @return array|null
+     */
+    public function getEnabledMarketsFor($exchangeName){
+        $config = $this->getExchangesConfig();
+        if(array_key_exists($exchangeName, $config) && isset($config[$exchangeName]['symbols'])){
+            return $config[$exchangeName]['symbols'];
+        }else{
+            return null;
+        }
+    }
+
+    //-- Private
 
     /**
      * @param       $name

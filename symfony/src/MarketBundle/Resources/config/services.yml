@@ -3,12 +3,13 @@ services:
 #        class: MarketBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
 
+
     exchange.manager:
         class: MarketBundle\Service\ExchangeManager
         public: true
         arguments: ["%exchanges%"]
 
-    markets.update.ohlc:
-        class: MarketBundle\Service\MarketsOHLCUpdateService
+    markets.data:
+        class: MarketBundle\Service\MarketDataService
         public: true
-        arguments: [ "@exchange.manager", %markets.symbols%]
+        arguments: ["@exchange.manager", "@doctrine.orm.entity_manager"]
