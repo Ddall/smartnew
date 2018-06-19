@@ -14,12 +14,24 @@ parameters:
         kraken:
           apikey: ~
           secret: ~
-          symbols: ['BTC/EUR']
+          symbols:
+            btceur:
+              name: 'BTC/EUR'
+              timeframe: '1m'
         cex:
           apikey: ~
           secret: ~
-          symbols: ['BTC/EUR']
+          symbols:
+            btceur:
+              name: 'BTC/EUR'
+              timeframe: '1m'
         gdax:
           apikey: ~
           secret: ~
-          symbols: ['BTC/EUR', 'BTC/USD']
+          symbols:
+            btceur:
+              name: 'BTC/EUR'
+              timeframe: '1m'
+            btcusd:
+              name: 'BTC/USD'
+              timeframe: '1m'

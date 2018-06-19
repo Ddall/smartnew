@@ -2,12 +2,17 @@
 
 namespace MarketBundle\Command;
 
-use MarketBundle\Entity\Market;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MarketsUpdateCandlestickCommand extends ContainerAwareCommand {
+
+    /**
+     * @var string
+     */
+    const DEFAULT_TIMEFRAME = '1m';
+
     /**
      * {@inheritdoc}
      */
@@ -34,7 +39,7 @@ class MarketsUpdateCandlestickCommand extends ContainerAwareCommand {
                 $output->writeln('Starting on ' . $name);
 
                 foreach ($markets as $market){
-                    $data = $exchange->fetchOHLCV()
+                    $data = $exchange->fetchOHLCV($market, $timeframe, $since);
                 }
 
             }else{
