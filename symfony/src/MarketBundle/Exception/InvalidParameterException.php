@@ -7,6 +7,6 @@
 namespace MarketBundle\Exception;
 
 
-class InvalidParameterException {
+class InvalidParameterException extends MarketException {
 
 }

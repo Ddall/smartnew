@@ -49,6 +49,8 @@ class ExchangeManager {
         $this->strict = $strict;
     }
 
+    // Simple exchange
+
     /**
      * @param $name
      * @param $options
@@ -56,7 +58,7 @@ class ExchangeManager {
      * @throws InvalidParameter
      */
     public function getExchange($name){
-        if(array_key_exists($name, $this->exchangesConfig) === false){
+        if($this->isExchangeConfigAvailable($name) == false){
             throw new InvalidParameter('could not fetch configuration for ' . $name . ' is this exchange enabled?');
         }
 
@@ -81,17 +83,19 @@ class ExchangeManager {
         return $exchanges;
     }
 
+    // END Simple exchange
+
     /**
-     * @param $exchangeName
-     * @return array|null
+     * @param $name
+     * @return mixed
+     * @throws InvalidParameter
      */
-    public function getEnabledMarketsFor($exchangeName){
-        $config = $this->getExchangesConfig();
-        if(array_key_exists($exchangeName, $config) && isset($config[$exchangeName]['symbols'])){
-            return $config[$exchangeName]['symbols'];
-        }else{
-            return null;
+    public function getExchangeMarkets($name){
+        if($this->isExchangeConfigAvailable($name)){
+            throw new InvalidParameter('could not fetch configuration for ' . $name . ' is this exchange enabled?');
         }
+
+        return $this->exchangesConfig[$name]['markets'];
     }
 
     //-- Private
@@ -139,9 +143,11 @@ class ExchangeManager {
     }
 
     /**
-     * @return array
+     * @param $name
+     * @return bool
      */
-    public function getExchangesConfig(){
-        return $this->exchangesConfig;
+    private function isExchangeConfigAvailable($name){
+        return array_key_exists($name, $this->exchangesConfig);
     }
+
 }

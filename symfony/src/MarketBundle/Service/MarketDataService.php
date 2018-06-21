@@ -9,6 +9,7 @@ namespace MarketBundle\Service;
 use Doctrine\ORM\EntityManager;
 use MarketBundle\Entity\Candlestick;
 use MarketBundle\Entity\Market;
+use MarketBundle\Exception\MarketFunctionalityUnavailable;
 
 class MarketDataService {
 
@@ -44,13 +45,13 @@ class MarketDataService {
      * @throws \Doctrine\Common\Persistence\Mapping\MappingException
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws MarketFunctionalityUnavailable
      */
     public function updateOHLC(Market $market, \DateTime $since, $timeframe = '1m'){
         $ccxtExchange = $this->exchangeManager->getExchange($market->getExchange());
 
         if($ccxtExchange->has('fetchOHLCV') === false){
-            // @todo Is this how we should handle a market without OHLCV available?
-            return false;
+            throw new MarketFunctionalityUnavailable('Market ' . get_class($market) . ' has no fetchOHLCV method available');
         }
 
         $rawOHLCV = $ccxtExchange->fetchOHLCV($market->getSymbol(), $timeframe, $since);

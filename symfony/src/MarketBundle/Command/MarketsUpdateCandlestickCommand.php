@@ -2,16 +2,12 @@
 
 namespace MarketBundle\Command;
 
+use AppBundle\Exception\InvalidParameter;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MarketsUpdateCandlestickCommand extends ContainerAwareCommand {
-
-    /**
-     * @var string
-     */
-    const DEFAULT_TIMEFRAME = '1m';
 
     /**
      * {@inheritdoc}
@@ -34,12 +30,18 @@ class MarketsUpdateCandlestickCommand extends ContainerAwareCommand {
         $exchanges = $exchangeManager->getAvailableExchanges();
 
         foreach ($exchanges as $name => $exchange){
-            $markets = $exchangeManager->getEnabledMarketsFor($name);
+
+            try{
+                $markets = $exchangeManager->getExchangeMarkets($name);
+            }catch (InvalidParameter $exception){
+                $output->writeln('Error: Could not fetch markets for ' . $name);
+                continue;
+            }
+
             if(is_array($markets)){
                 $output->writeln('Starting on ' . $name);
 
                 foreach ($markets as $market){
-                    $data = $exchange->fetchOHLCV($market, $timeframe, $since);
                 }
 
             }else{
