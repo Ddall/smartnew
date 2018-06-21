@@ -21,12 +21,17 @@ class ManagedExchange {
      */
     private $marketsConfig;
 
-
+    /**
+     * ManagedExchange constructor.
+     *
+     * @param Exchange $exchange
+     * @param array    $marketsConfig
+     */
     public function __construct(Exchange $exchange, array $marketsConfig) {
         $this->ccxtExchange = $exchange;
         $this->marketsConfig = $marketsConfig;
-    }
 
+    }
 
     /**
      * @return Exchange
@@ -48,5 +53,4 @@ class ManagedExchange {
     }
 
 
-    
 }
