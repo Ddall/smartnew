@@ -64,15 +64,15 @@ class ChartsController extends Controller {
         $ob->title->text('Average Monthly Weather Data for Tokyo');
         $ob->xAxis->categories($categories);
         $ob->yAxis($yData);
-//        $ob->legend->enabled(   false);
-//        $formatter = new Expr('function () {
-//                 var unit = {
-//                     "Rainfall": "mm",
-//                     "Temperature": "degrees C"
-//                 }[this.series.name];
-//                 return this.x + ": <b>" + this.y + "</b> " + unit;
-//             }');
-//        $ob->tooltip->formatter($formatter);
+        $ob->legend->enabled(   false);
+        $formatter = new Expr('function () {
+                 var unit = {
+                     "Rainfall": "mm",
+                     "Temperature": "degrees C"
+                 }[this.series.name];
+                 return this.x + ": <b>" + this.y + "</b> " + unit;
+             }');
+        $ob->tooltip->formatter($formatter);
         $ob->series($series);
 
         return $this->render('@App/basechart.html.twig', array(

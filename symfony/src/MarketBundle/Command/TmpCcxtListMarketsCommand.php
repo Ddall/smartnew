@@ -54,7 +54,7 @@ class TmpCcxtListMarketsCommand extends ContainerAwareCommand {
                     }
                     $table->render();
 
-//                    $output->writeln(print_r($market, true));
+                    $output->writeln(print_r($market, true));
 
                 }catch (\Exception $exception){
                     $output->writeln($exchange->name . ' ' .gettype($exception) . ' '. $exception->getMessage());
