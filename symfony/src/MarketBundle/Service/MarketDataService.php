@@ -47,7 +47,7 @@ class MarketDataService {
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws MarketFunctionalityUnavailable
      */
-    public function updateOHLC(Market $market, \DateTime $since, $timeframe = '1m'){
+    public function updateCandlestickData(Market $market, \DateTime $since, $timeframe = '1m'){
         $ccxtExchange = $this->exchangeManager->getExchange($market->getExchange());
 
         if($ccxtExchange->has('fetchOHLCV') === false){
@@ -64,7 +64,12 @@ class MarketDataService {
 
         // persist
         $i = 0;
+
+        /**
+         * @var $candlestick Candlestick
+         */
         foreach ($candlesticks as $candlestick){
+            $candlestick->setMarket($market);
             $this->entityManager->persist($candlestick);
 
             if($i > self::BATCH_SIZE){
@@ -78,7 +83,6 @@ class MarketDataService {
 
         $this->entityManager->flush();
         $this->entityManager->clear();
-
         return count($candlesticks);
     }
 

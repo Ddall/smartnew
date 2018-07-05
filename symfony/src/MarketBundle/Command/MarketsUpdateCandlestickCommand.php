@@ -3,6 +3,8 @@
 namespace MarketBundle\Command;
 
 use AppBundle\Exception\InvalidParameter;
+use MarketBundle\Entity\Candlestick;
+use MarketBundle\Entity\Market;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,32 +26,68 @@ class MarketsUpdateCandlestickCommand extends ContainerAwareCommand {
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
 
+        $em = $this->getContainer()->get('doctrine')->getManager();
+
         // Fetching all markets
         $exchangeManager = $this->getContainer()->get('exchange.manager');
 
         $exchanges = $exchangeManager->getAvailableExchanges();
+        $availableMarkets = $em->getRepository(Market::class)->findAll();
 
-        foreach ($exchanges as $name => $exchange){
+        /**
+         * @var $market Market
+         */
+        foreach ($availableMarkets as $market){
+            $output->writeln('Working on ' . $market->getSymbol() . ' on ' . $market->getExchange());
 
-            try{
-                $markets = $exchangeManager->getExchangeMarkets($name);
-            }catch (InvalidParameter $exception){
-                $output->writeln('Error: Could not fetch markets for ' . $name);
+            $exchangeConfig = $exchangeManager->getExchangeConfig($market->getExchange());
+            $marketConfig = $this->getConfigFor($exchangeConfig, $market->getSymbol());
+
+            if(array_key_exists($market->getExchange(), $exchanges)){
+                $exchange = $exchanges[$market->getExchange()];
+            }else{
+                $output->writeln(' ERROR FETCHING EXCHANGE ' . $market->getExchange());
                 continue;
             }
 
-            if(is_array($markets)){
-                $output->writeln('Starting on ' . $name);
+            // Find last call
+            $lastCandle = $em->getRepository(Candlestick::class)->getLastCandleFor($market);
 
-                foreach ($markets as $market){
-                }
+            if($lastCandle instanceof Candlestick === false){ // FIRST RUN MODE
+                $lastCall = null;
 
-            }else{
-                $output->writeln('Skipping ' . $name . ' (no markets in parameters.yml)');
+            }else{ // REGULAR RUN MODE
+                $lastCall = $lastCandle->getTimestamp();
             }
 
+            $candleData = $exchange->fetchOHLCV($market->getSymbol(), $marketConfig['timeframe'], $lastCall);
+
+            $output->write('Saving ' . count($candleData) . ' candles');
+            $Candlesticks = array();
+            foreach ($candleData as $candleDatum){
+                $tmpCandle = new Candlestick($candleDatum, $marketConfig['timeframe'], $market);
+                $em->persist($tmpCandle);
+            }
+
+            $em->flush();
+            $output->writeln('Done');
 
 
         }
+
+    }
+
+    /**
+     * @param $config
+     * @param $market
+     * @return null
+     */
+    protected function getConfigFor($config, $market){
+        foreach ($config as $key => $values){
+            if($values['name'] = $market){
+                return $values;
+            }
+        }
+        return null;
     }
 }

@@ -9,18 +9,18 @@ namespace MarketBundle\Service;
 
 use AppBundle\Exception\InvalidParameter;
 use ccxt\Exchange;
+use MarketBundle\Exception\MarketException;
 
 class ExchangeManager {
+
+
+    const PARAMETER_SYMBOLS_KEY = 'symbols';
 
     /**
      * @var array
      */
     private $exchangesConfig;
 
-    /**
-     * @var boolean
-     */
-    private $strict;
 
     /**
      * ExchangeManager constructor.
@@ -46,7 +46,6 @@ class ExchangeManager {
         }
 
         $this->exchangesConfig = $exchangesConfig;
-        $this->strict = $strict;
     }
 
     // Simple exchange
@@ -58,7 +57,7 @@ class ExchangeManager {
      * @throws InvalidParameter
      */
     public function getExchange($name){
-        if($this->isExchangeConfigAvailable($name) == false){
+        if($this->isExchangeConfigAvailable($name) === false){
             throw new InvalidParameter('could not fetch configuration for ' . $name . ' is this exchange enabled?');
         }
 
@@ -83,6 +82,19 @@ class ExchangeManager {
         return $exchanges;
     }
 
+    /**
+     * @param $name string Exchange name
+     * @return array
+     * @throws MarketException
+     */
+    public function getExchangeConfig($name){
+
+        if($this->isExchangeConfigAvailable($name) === true){
+            return $this->exchangesConfig[$name]['symbols'];
+        }else{
+            throw new MarketException('Could not fetch config for ' . $name . '');
+        }
+    }
     // END Simple exchange
 
     /**
@@ -95,7 +107,7 @@ class ExchangeManager {
             throw new InvalidParameter('could not fetch configuration for ' . $name . ' is this exchange enabled?');
         }
 
-        return $this->exchangesConfig[$name]['markets'];
+        return $this->exchangesConfig[$name]['symbols'];
     }
 
     //-- Private

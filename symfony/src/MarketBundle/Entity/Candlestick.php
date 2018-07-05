@@ -24,7 +24,7 @@ class Candlestick
     /**
      * @var int
      *
-     * @ORM\Column(name="timestamp", type="integer")
+     * @ORM\Column(name="timestamp", type="float")
      */
     private $timestamp;
 
@@ -73,7 +73,7 @@ class Candlestick
     /**
      * @var Market
      * @ORM\ManyToOne(targetEntity="MarketBundle\Entity\Market")
-     * @ORM\JoinColumn(name="market_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="market_id", referencedColumnName="id", nullable=false, unique=false)
      */
     private $market;
 

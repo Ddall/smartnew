@@ -3,6 +3,7 @@
 namespace MarketBundle\Command;
 
 use MarketBundle\Entity\Market;
+use MarketBundle\Exception\MarketException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,39 +32,62 @@ class InitMarketsCommand extends ContainerAwareCommand {
     protected function execute(InputInterface $input, OutputInterface $output) {
 
         $exchangesManager = $this->getContainer()->get('exchange.manager');
-
         $exchanges = $exchangesManager->getAvailableExchanges();
-
-//        $output->writeln('')
         $markets = array();
+
         foreach ($exchanges as $name => $exchange){
+            $output->write('Exchange ' . $name . ' has ');
+            $config = $exchangesManager->getExchangeConfig($name);
+            $output->writeln(count($config) . ' markets enabled in parameters.yml');
 
-            $marketsData = $exchange->fetchMarkets();
+            $allMarkets = $exchange->fetchMarkets();
 
-            foreach ($marketsData as $market){
-                $i = new Market($market);
-                $i->setExchange($name);
-                $markets[] = $i;
+            foreach ($config as $id => $values){
+                $rawMarket = $this->findMarketBySymbol($allMarkets, $values['name']);
+
+                if(is_array($rawMarket) === false){
+                    throw new MarketException('Could not load market from parameters.yml:'. $id);
+                }
+
+                $newMarket = new Market($rawMarket);
+                $newMarket->setExchange($name);
+                $markets[] = $newMarket;
+
             }
         }
 
-        $existing = $this->getContainer()->get('doctrine')->getRepository(Market::class)->findAll();
-        $output->write('Removing ' . count($existing) . ' markets ');
+        // persist
         $em = $this->getContainer()->get('doctrine')->getManager();
-        foreach ($existing as $e){
-            $em->remove($e);
+        foreach ($markets as $market){
+
+            // check if it exists
+            $persistedMarket = $em->getRepository(Market::class)->findOneBy(array(
+                'symbol' => $market->getSymbol(),
+                'exchange' => $market->getExchange(),
+            ));
+
+            if($persistedMarket instanceof Market === false){
+                $output->writeln('    ' . $market->getSymbol() . ' on ' . $market->getExchange() . ' will be created');
+                $em->persist($market);
+            }else{
+                $output->writeln('    ' . $market->getSymbol() . ' on ' . $market->getExchange() . ' already exists');
+            }
         }
         $em->flush();
-        $output->writeln('done');
+    }
 
-        // save all
-        $output->write('Saving ' . count($markets) . ' markets ');
-        foreach ($markets as $name => $marketEntity){
-            $em->persist($marketEntity);
+
+    /**
+     * @param array $markets
+     * @param       $symbol
+     * @return array|null
+     */
+    protected function findMarketBySymbol(array $markets, $symbol){
+        foreach ($markets as $key => $market){
+            if($market['symbol'] == $symbol){
+                return $market;
+            }
         }
-
-        $em->flush();
-        $output->writeln('done');
-
+        return null;
     }
 }

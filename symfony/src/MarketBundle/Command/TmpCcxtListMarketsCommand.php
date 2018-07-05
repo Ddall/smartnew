@@ -66,7 +66,7 @@ class TmpCcxtListMarketsCommand extends ContainerAwareCommand {
 
 
             }else{
-                $output->writeln($exchange->name . ' IS A PARTY POOPER');
+                $output->writeln($exchange->name . ' IS A BIG MEANIE');
             }
         }
 

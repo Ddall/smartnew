@@ -15,9 +15,9 @@ class Market
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="guid")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $idLocal;
 
@@ -70,6 +70,8 @@ class Market
      * @param array $data
      */
     public function __construct($data = array()) {
+        $this->info = array();
+
         if(empty($data) === false){
             $this->hydrateFromArray($data);
         }
@@ -232,4 +234,22 @@ class Market
     {
         return $this->exchange;
     }
+
+    /**
+     * @return array
+     */
+    public function getInfo(): array {
+        return $this->info;
+    }
+
+    /**
+     * @param array $info
+     * @return Market
+     */
+    public function setInfo(array $info): Market {
+        $this->info = $info;
+        return $this;
+    }
+
+
 }
