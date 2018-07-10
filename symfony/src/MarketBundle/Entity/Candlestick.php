@@ -3,6 +3,7 @@
 namespace MarketBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Candlestick
@@ -13,11 +14,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Candlestick
 {
     /**
-     * @var int
+     * @var UuidInterface
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="uuid", unique=true)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
+     *
      */
     private $id;
 
