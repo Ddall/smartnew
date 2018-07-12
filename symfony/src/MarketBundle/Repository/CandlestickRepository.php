@@ -23,9 +23,10 @@ class CandlestickRepository extends \Doctrine\ORM\EntityRepository{
             ->select('c')
             ->where('c.market = :market')
             ->setParameter('market', $market)
-            ->orderBy('c.timestamp', 'DESC')
+            ->orderBy('c.date', 'DESC')
+            ->setMaxResults(1)
             ;
 
-        return $q->getQuery()->getFirstResult();
+        return $q->getQuery()->getOneOrNullResult();
     }
 }

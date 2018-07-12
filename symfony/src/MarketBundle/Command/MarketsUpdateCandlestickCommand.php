@@ -38,7 +38,7 @@ class MarketsUpdateCandlestickCommand extends ContainerAwareCommand {
          * @var $market Market
          */
         foreach ($availableMarkets as $market){
-            $output->writeln('Working on ' . $market->getSymbol() . ' on ' . $market->getExchange());
+            $output->write('Working on ' . $market->getSymbol() . ' on ' . $market->getExchange());
 
             $exchangeConfig = $exchangeManager->getExchangeConfig($market->getExchange());
             $marketConfig = $this->getConfigFor($exchangeConfig, $market->getSymbol());
@@ -53,12 +53,18 @@ class MarketsUpdateCandlestickCommand extends ContainerAwareCommand {
             // Find last call
             $lastCandle = $em->getRepository(Candlestick::class)->getLastCandleFor($market);
 
+
+            $output->write('. Last known candle: ' );
             if($lastCandle instanceof Candlestick === false){ // FIRST RUN MODE
                 $lastCall = null;
+                $output->writeln('None');
 
             }else{ // REGULAR RUN MODE
                 $lastCall = $lastCandle->getTimestamp();
+
+                $output->writeln($lastCandle->getDate()->format(DATE_ATOM));
             }
+
 
             $candleData = $exchange->fetchOHLCV($market->getSymbol(), $marketConfig['timeframe'], $lastCall);
 

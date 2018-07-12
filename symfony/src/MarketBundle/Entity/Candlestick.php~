@@ -26,7 +26,7 @@ class Candlestick
     private $id;
 
     /**
-     * @var \DateTime
+     * @var int
      *
      * @ORM\Column(name="date", type="datetime", nullable=false)
      */
@@ -102,7 +102,7 @@ class Candlestick
         $this->market = $market;
         $this->timeframe = $timeframe;
 
-        $this->setDateFromTimestamp($raw_ohlcv_line[0]);
+        $this->timestamp = $raw_ohlcv_line[0];
         $this->open = $raw_ohlcv_line[1];
         $this->high = $raw_ohlcv_line[2];
         $this->low = $raw_ohlcv_line[3];
@@ -123,6 +123,30 @@ class Candlestick
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set timestamp.
+     *
+     * @param int $timestamp
+     *
+     * @return Candlestick
+     */
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
+
+        return $this;
+    }
+
+    /**
+     * Get timestamp.
+     *
+     * @return int
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
     }
 
     /**
@@ -302,6 +326,7 @@ class Candlestick
      */
     public function setCandleType($candleType)
     {
+
         if($this->isValidType($candleType) === false){
             throw new InvalidParameter(self::class .': Invalid Type given');
         }
@@ -335,47 +360,5 @@ class Candlestick
     public function getCandleType()
     {
         return $this->candleType;
-    }
-
-    /**
-     * Set date.
-     *
-     * @param \DateTime $date
-     *
-     * @return Candlestick
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * Get date.
-     *
-     * @return \DateTime
-     */
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    /**
-     * @param int $timestamp
-     * @return $this
-     */
-    public function setDateFromTimestamp(int $timestamp){
-
-        $this->date = \DateTime::createFromFormat('U', $timestamp/1000);
-        return $this;
-    }
-
-    /**
-     * Returns a micro timestamp as expected by CCXT
-     * @return float
-     */
-    public function getTimestamp(){
-        return $this->date->getTimestamp()*1000;
     }
 }
