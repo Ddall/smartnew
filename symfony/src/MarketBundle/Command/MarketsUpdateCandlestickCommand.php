@@ -63,7 +63,7 @@ class MarketsUpdateCandlestickCommand extends ContainerAwareCommand {
             $candleData = $exchange->fetchOHLCV($market->getSymbol(), $marketConfig['timeframe'], $lastCall);
 
             $output->write('Saving ' . count($candleData) . ' candles');
-            $Candlesticks = array();
+
             foreach ($candleData as $candleDatum){
                 $tmpCandle = new Candlestick($candleDatum, $marketConfig['timeframe'], $market);
                 $em->persist($tmpCandle);

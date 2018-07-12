@@ -11,8 +11,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class InitMarketsCommand
  *
- * @todo this functionality should not be required, move to a service to automate
- *
  * @package MarketBundle\Command
  */
 class InitMarketsCommand extends ContainerAwareCommand {

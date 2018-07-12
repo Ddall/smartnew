@@ -2,6 +2,7 @@
 
 namespace MarketBundle\Entity;
 
+use AppBundle\Exception\InvalidParameter;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
@@ -69,7 +70,7 @@ class Candlestick
     /**
      * @var string
      *
-     * @ORM\Column(name="timeframe", type="string", length=255)
+     * @ORM\Column(name="timeframe", type="string", length=255, nullable=false)
      */
     private $timeframe;
 
@@ -79,6 +80,16 @@ class Candlestick
      * @ORM\JoinColumn(name="market_id", referencedColumnName="id", nullable=false, unique=false)
      */
     private $market;
+
+
+    const TYPE_MARKET_NATIVE='market_native';
+    const TYPE_LOCAL_COMPUTE='local_compute';
+
+    /**
+     * @var string
+     * @ORM\Column(name="candle_type", type="string", length=20)
+     */
+    private $candleType;
 
     /**
      * Candlestick constructor.
@@ -98,6 +109,10 @@ class Candlestick
         $this->closing = $raw_ohlcv_line[4];
         $this->volume = $raw_ohlcv_line[5];
 
+        /**
+         * This parameter is NATIVE by default
+         */
+        $this->candleType=self::TYPE_MARKET_NATIVE;
     }
 
     /**
@@ -300,5 +315,50 @@ class Candlestick
     public function getMarket()
     {
         return $this->market;
+    }
+
+    /**
+     * Set candleType.
+     *
+     * @param string $candleType
+     * @throws InvalidParameter
+     * @return Candlestick
+     */
+    public function setCandleType($candleType)
+    {
+
+        if($this->isValidType($candleType) === false){
+            throw new InvalidParameter(self::class .': Invalid Type given');
+        }
+
+        $this->candleType = $candleType;
+
+        return $this;
+    }
+
+    /**
+     * @param $candleType
+     * @return bool
+     */
+    public function isValidType($candleType){
+        switch ($candleType){
+            case self::TYPE_LOCAL_COMPUTE:
+            case self::TYPE_MARKET_NATIVE:
+                return true;
+                break;
+            default:
+                return false;
+                break;
+        }
+    }
+
+    /**
+     * Get candleType.
+     *
+     * @return string
+     */
+    public function getCandleType()
+    {
+        return $this->candleType;
     }
 }
