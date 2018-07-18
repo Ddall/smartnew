@@ -3,7 +3,7 @@ version: '2'
 services:
     php:
         build:
-            context: php7-fpm
+            context: php7-fpm-dev
         volumes:
             - ../symfony:/var/www/symfony
     nginx:

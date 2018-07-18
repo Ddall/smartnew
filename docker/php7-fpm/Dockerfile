@@ -1,16 +1,11 @@
 # See https://github.com/docker-library/php/blob/master/7.1/fpm/Dockerfile
-FROM ddall/docker-php-ms
+FROM ddall/php-trader
 
-#RUN apt-get update && apt-get install -y \
-#    && rm -rf /var/lib/apt/lists/*
-
-RUN pecl install trader && docker-php-ext-enable trader
 ADD 99-extra-config.ini /usr/local/etc/php/conf.d/
 
+WORKDIR /var/www/symfony
+RUN ssh -oStrictHostKeyChecking=no github.com; exit 0
+RUN ssh -oStrictHostKeyChecking=no gitlab.com; exit 0
 
-#RUN apt-get update && apt-get install -y libpq-dev npm node sudo git \
-#    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-#    && docker-php-ext-install pdo pdo_pgsql pgsql \
-#    && rm -rf /var/lib/apt/lists/*
-
-RUN docker-php-ext-install pdo pdo_mysql
+COPY symfony /var/www/symfony
+RUN mkdir -p /var/www/symfony/var && chown www-data:www-data -R /var/www/symfony/var
