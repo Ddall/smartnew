@@ -9,3 +9,6 @@ RUN ssh -oStrictHostKeyChecking=no gitlab.com; exit 0
 
 COPY symfony /var/www/symfony
 RUN mkdir -p /var/www/symfony/var && chown www-data:www-data -R /var/www/symfony/var
+
+
+ENTRYPOINT entrypoint.sh
