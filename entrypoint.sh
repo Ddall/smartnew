@@ -8,7 +8,8 @@ install() {
 }
 
 tests() {
-    php vendor/bin/phpunit -c /src/
+#    php vendor/bin/phpunit -c /src/
+    echo "Dummy testing"
 }
 
 run() {
