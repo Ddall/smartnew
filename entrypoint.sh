@@ -12,7 +12,7 @@ tests() {
 }
 
 run() {
-    docker-php-entrypoint
+    /usr/local/bin/docker-php-entrypoint
 }
 
 case "$1" in
