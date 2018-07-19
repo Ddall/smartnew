@@ -11,6 +11,7 @@ COPY symfony /var/www/symfony
 RUN mkdir -p /var/www/symfony/var && chown www-data:www-data -R /var/www/symfony/var
 
 COPY docker/php7-fpm/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 # Install deps
 RUN /entrypoint.sh install && \
