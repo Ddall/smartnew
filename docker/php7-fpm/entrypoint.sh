@@ -25,8 +25,7 @@ case "$1" in
     tests
     ;;
 "run")
-    echo "Run"
-    run
+    /usr/local/bin/docker-php-entrypoint
     ;;
 *)
     echo "Custom command : $@"
