@@ -4,7 +4,6 @@ set -e
 
 install() {
     sudo -u www-data composer install
-    sudo -u www-data php bin/console assets:install
 }
 
 tests() {

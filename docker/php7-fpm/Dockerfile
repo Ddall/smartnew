@@ -18,5 +18,7 @@ RUN chown www-data:www-data -R /var/www && \
     rm /var/www/symfony/web/app_dev.php && \
     /entrypoint.sh install
 
+#RUN sudo -u www-data composer install
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["run"]
