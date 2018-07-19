@@ -3,7 +3,10 @@ version: '2'
 
 services:
     php:
-        image: registry.gitlab.com/allan.i/smartnew:php-master
+#        image: registry.gitlab.com/allan.i/smartnew:php-master
+        build:
+          context: ../
+          dockerfile: docker/php7-fpm/Dockerfile
         volumes:
             - ../symfony:/var/www/symfony
     nginx:

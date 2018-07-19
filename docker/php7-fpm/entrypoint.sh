@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -e
 
@@ -25,7 +25,7 @@ case "$1" in
     tests
     ;;
 "run")
-    /usr/local/bin/docker-php-entrypoint
+    docker-php-entrypoint
     ;;
 *)
     echo "Custom command : $@"
