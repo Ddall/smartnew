@@ -14,7 +14,7 @@ RUN mkdir -p /var/www/symfony/var && chown www-data:www-data -R /var/www/symfony
 #RUN chmod +x /entrypoint.sh
 
 # Prepare sf & Install deps
-RUN cp /var/www/symfony/app/config/parameters.yml.dist /var/www/symfony/app/config/parameters.yml
+RUN cp /var/www/symfony/app/config/parameters.yml.dist /var/www/symfony/app/config/parameters.yml && \
     chown www-data:www-data -R /var/www && \
     rm /var/www/symfony/web/app_dev.php
 
