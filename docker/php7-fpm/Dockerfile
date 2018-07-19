@@ -13,8 +13,9 @@ RUN mkdir -p /var/www/symfony/var && chown www-data:www-data -R /var/www/symfony
 #COPY docker/php7-fpm/entrypoint.sh /entrypoint.sh
 #RUN chmod +x /entrypoint.sh
 
-# Install deps
-RUN chown www-data:www-data -R /var/www && \
+# Prepare sf & Install deps
+RUN cp /var/www/symfony/app/config/parameters.yml.dist /var/www/symfony/app/config/parameters.yml
+    chown www-data:www-data -R /var/www && \
     rm /var/www/symfony/web/app_dev.php
 
 RUN sudo -u www-data composer install
