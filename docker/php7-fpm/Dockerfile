@@ -14,7 +14,7 @@ COPY docker/php7-fpm/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Install deps
-RUN chown www-data:www-data -R /var/www/symfony && \
+RUN chown www-data:www-data -R /var/www && \
     rm /var/www/symfony/web/app_dev.php && \
     /entrypoint.sh install
 
