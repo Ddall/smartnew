@@ -9,9 +9,11 @@ parameters:
     mailer_host: 127.0.0.1
     mailer_user: null
     mailer_password: null
-    secret: pj4kFU79zbXuHrk35NmUeub3MZZHGMwM7YKUqJNT69CKBQbf3CP4PK7xQd
+    secret: WD7cx85tcnyrkJytk829yfgsb7ZgM1qAjYe
+
     exchanges:
         kraken:
+#          apikey: '/FewoPCjevq0i53OntcRVdu9kUnYcYMknTPbsZM6ivtUFObw7dgN4SyQ'
           apikey: ~
           secret: ~
           symbols:
@@ -25,9 +27,11 @@ parameters:
             btceur:
               name: 'BTC/EUR'
               timeframe: '1m'
+          options:
+            fetchOHLCVWarning: false
         gdax:
-          apikey: ~
-          secret: ~
+          apikey: 'kuyr60jLf5HMVMDq'
+          secret: 'LYj0TqWqOU4kuWLGty4ZC6gB7vSKC3ZH'
           symbols:
             btceur:
               name: 'BTC/EUR'
