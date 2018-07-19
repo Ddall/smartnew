@@ -10,16 +10,12 @@ RUN ssh -oStrictHostKeyChecking=no gitlab.com; exit 0
 COPY symfony /var/www/symfony
 RUN mkdir -p /var/www/symfony/var && chown www-data:www-data -R /var/www/symfony/var
 
-COPY docker/php7-fpm/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+#COPY docker/php7-fpm/entrypoint.sh /entrypoint.sh
+#RUN chmod +x /entrypoint.sh
 
 # Install deps
 RUN chown www-data:www-data -R /var/www && \
     rm /var/www/symfony/web/app_dev.php
-#    && \
-#    /entrypoint.sh install
 
 RUN sudo -u www-data composer install
 
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["run"]

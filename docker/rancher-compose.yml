@@ -3,18 +3,23 @@ version: '2'
 
 services:
     php:
-#        image: registry.gitlab.com/allan.i/smartnew:php-master
-        build:
-          context: ../
-          dockerfile: docker/php7-fpm/Dockerfile
+        image: registry.gitlab.com/allan.i/smartnew:php-master
+#        build:
+#          context: ../
+#          dockerfile: docker/php7-fpm/Dockerfile
         volumes:
             - ../symfony:/var/www/symfony
     nginx:
         image: registry.gitlab.com/allan.i/smartnew:nginx-master
+#        build:
+#          context: ../
+#          dockerfile: docker/nginx/Dockerfile
 #        ports:
 #            - ${HOST_HTTP_PORT}:80
         volumes_from:
             - php
+        links:
+          - php
     memcached:
         image: memcached:alpine
         links:
